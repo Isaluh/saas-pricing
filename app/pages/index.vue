@@ -1,11 +1,14 @@
 <template>
+    <!-- Cabeçalho da página com apresentação do objetivo da ferramenta -->
     <div class="flex flex-col gap-10">
         <div class="flex flex-col gap-3">
-            <h1 class="max-w-xl text-3xl font-extrabold tracking-tight md:text-4xl">Descubra um preço que <span class="text-green-800">faz sentido</span> para o seu SaaS.</h1>
+            <h1 class="max-w-xl text-3xl font-extrabold tracking-tight md:text-4xl">Descubra o preço que <span class="text-green-800">faz sentido</span> para o seu SaaS.</h1>
             <p class="max-w-2xl text-slate-500">Compare cenários, entenda seu ponto de equilíbrio e tome decisões com mais segurança.</p>
         </div>
 
+        <!-- Grid principal: lado esquerdo para inputs e lado direito para resultados -->
         <div class="grid grid-cols-2 gap-10 gridGeral">
+            <!-- Coluna de entrada de dados -->
             <aside class="flex flex-col gap-10 w-full">
                 <Secao >
                     <SecaoHeaderDefault titulo="Dados do cenário" descricao="Preencha os dados do plano" />
@@ -34,15 +37,20 @@
                     </div>
                 </Secao>
             </aside>
+
+            <!-- Coluna de resultado e análise do cenário -->
             <div class="flex flex-col gap-10 w-full">
+                <!-- Estado vazio: mostra imagem quando ainda não há cenário criado -->
                 <div v-if="cenarios.length == 0" class="flex items-center justify-center h-full">
                     <img src="/images/esperandoCalcular.png" alt="" width="50%" height="50%" />
                 </div>
 
+                <!-- Lista de cenários disponíveis para seleção -->
                 <section v-if="cenarios.length > 0" class="grid grid-cols-3 gap-4 grid-flow-row items-start">
                     <CenarioRadio v-for="cenario in cenarios" inputName="cenarios" :inputValue="String(cenario.id)" :precoPlano="Number(cenario.preco)" :nomePlano="cenario.nome" v-model="cenarioSelecionado" />
                 </section>
 
+                <!-- Resultados do cenário selecionado -->
                 <section v-if="cenarios.length > 0" class="flex flex-col gap-10">
 
                     <div class="grid grid-cols-4 gap-4 grid-flow-row items-center">
@@ -100,22 +108,34 @@
     import type { ChartOptions } from 'chart.js'
     import { Bar } from 'vue-chartjs'
 
+    // Estado global para resetar a página quando necessário
     const resetar = useState('resetar', () => false)
+
+    // Lista de cenários de preço cadastrados
     const cenarios = ref<Cenario[]>([])
+
+    // Identifica qual cenário está selecionado para análise
     const cenarioSelecionado = ref('0')
+
+    // Formulário de criação de um novo cenário (nome + preço)
     const novoCenario = ref<Cenario>({
         id: 0,
         nome: '',
         preco: null,
     })
+
+    // Dados da operação do negócio usados no cálculo financeiro
     const dados = ref<Dados>({
         custoFixo: '',
         custoVariavel: '',
         clientesPrevistos: null,
         tributos: ''
     })
+
+    // Controla exibição da seção de memória de cálculo
     const verMemoria = ref(false)
 
+    // Limpa todos os dados do simulador e volta ao estado inicial
     const resetarCenarios = () => {
         cenarios.value = []
         cenarioSelecionado.value = '0'
@@ -133,6 +153,7 @@
         verMemoria.value = false
     }
 
+    // Adiciona um cenário ao array quando o usuário envia o formulário
     function adicionarCenario() {
         if (!novoCenario.value.nome || novoCenario.value.preco === null) {
             alert('Preencha o nome e o preço do plano antes de adicionar um cenário.')
@@ -146,6 +167,7 @@
 
         cenarios.value.push(cenario)
 
+        // Limpa o formulário após salvar
         novoCenario.value = {
             id: 0,
             nome: '',
@@ -153,6 +175,7 @@
         }
     }
 
+    // Monta os cards de resultado com base no cálculo do cenário atual
     const cardsValores = computed(() => {
         if (!calculo.value) {
             return []
@@ -215,6 +238,7 @@
         ]
     })
 
+    // Converte valores numéricos para moeda no padrão brasileiro
     function formatarMoeda(valor: number) {
         return new Intl.NumberFormat('pt-BR', {
             currency: 'BRL',
@@ -222,18 +246,21 @@
         }).format(valor)
     }
 
+    // Converte valores numéricos para exibição em porcentagem ou número simples
     function formatarNumero(valor: number) {
         return new Intl.NumberFormat('pt-BR', {
             maximumFractionDigits: 2
         }).format(valor)
     }
 
+    // Retorna o cenário atualmente selecionado pelo usuário
     const cenarioAtual = computed(() => {
         return cenarios.value.find(
             cenario => String(cenario.id) === cenarioSelecionado.value
         ) ?? null
     })
 
+    // Calcula os indicadores financeiros do cenário ativo
     const calculo = computed(() => {
         if (!cenarioAtual.value) {
             return null
@@ -243,12 +270,14 @@
         return calcularCenario(preco, dados.value)
     })
 
+    // Faz o cálculo do resultado, margem e ponto de equilíbrio do negócio
     function calcularCenario(preco: number, dados: Dados) {
         const custoFixo = Number(dados.custoFixo)
         const custoVariavel = Number(dados.custoVariavel)
         const clientes = Number(dados.clientesPrevistos)
         const taxa = Number(dados.tributos) / 100
 
+        // Valida se todos os dados mínimos foram preenchidos antes de calcular
         const dadosPreenchidos =
             preco > 0 &&
             dados.custoFixo !== '' &&
@@ -269,24 +298,29 @@
             }
         }
 
+        // Cálculo da receita, tributos e custo variável total
         const receita = preco * clientes
         const tributos = receita * taxa
         const custoVariavelTotal = custoVariavel * clientes
 
+        // Resultado operacional do cenário
         const resultado =
             receita -
             custoFixo -
             custoVariavelTotal -
             tributos
 
+        // Quantidade que cada cliente ainda contribui após tributos e custo variável
         const contribuicaoUnitária =
             preco * (1 - taxa) - custoVariavel
 
+        // Percentual de lucro ou prejuízo sobre a receita
         const margem =
             receita > 0
                 ? (100 * resultado) / receita
                 : null
 
+        // Quantidade mínima de clientes para cobrir custos fixos
         let clientesEquilibrio: number | null = null
 
         if (custoFixo === 0) {
@@ -308,6 +342,7 @@
         }
     }
 
+    // Registra os módulos do Chart.js usados no gráfico
     ChartJS.register(
         CategoryScale,
         LinearScale,
@@ -316,6 +351,7 @@
         Legend
     )
 
+    // Monta os dados do gráfico de barras para o cenário atual
     const chartData = computed(() => {
         if (!cenarioAtual.value) {
             return {
@@ -374,6 +410,7 @@
         }
     })
 
+    // Define a aparência do gráfico e as configurações do tooltip/escala
     const chartOptions = computed<ChartOptions<'bar'>>(() => ({
         responsive: true,
         maintainAspectRatio: false,
@@ -454,7 +491,7 @@
         },
     }))
 
-
+    // Gera uma sequência de volumes de clientes para mostrar a evolução do resultado
     const volumesClientes = computed(() => {
         const clientesPrevistos =
             Number(dados.value.clientesPrevistos) || 100
@@ -476,7 +513,7 @@
         )
     })
 
-
+    // Cria uma mensagem textual interpretando se o cenário está acima, abaixo ou no ponto de equilíbrio
     const leituraCenario = computed(() => {
         if (!cenarioAtual.value || !calculo.value) {
             return null
@@ -510,6 +547,7 @@
         }
     })
 
+    // Observa a flag de reset e limpa os dados quando ela for ativada
     watch(resetar, (valor) => {
         if (valor) {
             resetarCenarios()
