@@ -134,6 +134,11 @@
     }
 
     function adicionarCenario() {
+        if (!novoCenario.value.nome || novoCenario.value.preco === null) {
+            alert('Preencha o nome e o preço do plano antes de adicionar um cenário.')
+            return
+        }
+
         const cenario: Cenario = {
             ...novoCenario.value,
             id: cenarios.value.length

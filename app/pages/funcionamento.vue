@@ -11,8 +11,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
                 </SecaoHeaderComIcon>
                 <p class="text-slate-500">
-                    <strong class="text-black">1. Informe os custos:</strong> custo fixo mensal, custo variável por cliente e tributos.<br><br>
-                    <strong class="text-black">2. Crie dois cenários:</strong> escolha nomes e preços mensais diferentes.<br><br>
+                    <strong class="text-black">1. Crie até 3 cenários:</strong> escolha nomes e preços mensais diferentes.<br><br>
+                    <strong class="text-black">2. Informe os custos:</strong> custo fixo mensal, custo variável por cliente e tributos.<br><br>
                     <strong class="text-black">3. Compare os resultados:</strong> veja qual opção gera mais resultado, margem e segurança.<br><br>
                     <strong class="text-black">4. Interprete:</strong> use o gráfico e o ponto de equilíbrio para justificar sua escolha.
                 </p>
