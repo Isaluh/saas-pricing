@@ -104,6 +104,7 @@
 
 <script setup lang="ts">
     import type { Cenario, Dados } from '~/models/models';
+    import { computed, ref, watch } from 'vue'
     import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend } from 'chart.js'
     import type { ChartOptions } from 'chart.js'
     import { Bar } from 'vue-chartjs'
