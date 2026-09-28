@@ -1,9 +1,10 @@
+<div align="center">
+
 # BambooPrice
 
-Simulador de precificação para SaaS com foco em margem, ponto de equilíbrio e cenários de negócio.
+</div>
 
-## Nome
-BambooPrice
+Simulador de precificação para SaaS com foco em margem, ponto de equilíbrio e cenários de negócio.
 
 ## Descrição
 BambooPrice é uma aplicação web para ajudar founders, gestores e times de produto a entender melhor como o preço de um SaaS impacta a saúde financeira do negócio.
@@ -25,19 +26,13 @@ O projeto foi pensado para quem precisa tomar decisões de precificação com ma
 - Interpretação textual do cenário para apoiar a decisão
 - Reset completo da simulação
 
-## Linguagens
+## Linguagens e tecnologias
 - TypeScript
 - HTML
 - CSS
-
-## Frameworks
 - Nuxt 4
 - Vue 3
-
-## Engine / runtime
 - Node.js
-
-## Bibliotecas relevantes
 - Tailwind CSS
 - Chart.js
 - vue-chartjs
@@ -55,7 +50,7 @@ Antes de rodar o projeto, certifique-se de que seu ambiente possui:
 Clone o repositório e instale as dependências:
 
 ```bash
-git clone <https://github.com/Isaluh/saas-pricing.git>
+git clone https://github.com/Isaluh/saas-pricing.git
 cd saas-pricing
 npm install
 ```
