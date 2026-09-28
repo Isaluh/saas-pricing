@@ -1,15 +1,15 @@
 <template>
     <!-- Cabeçalho da página com apresentação do objetivo da ferramenta -->
-    <div class="flex flex-col gap-10">
+    <div class="flex flex-col gap-4 lg:gap-10">
         <div class="flex flex-col gap-3">
             <h1 class="max-w-xl text-3xl font-extrabold tracking-tight md:text-4xl">Descubra o preço que <span class="text-green-800">faz sentido</span> para o seu SaaS.</h1>
             <p class="max-w-2xl text-slate-500">Compare cenários, entenda seu ponto de equilíbrio e tome decisões com mais segurança.</p>
         </div>
 
         <!-- Grid principal: lado esquerdo para inputs e lado direito para resultados -->
-        <div class="grid grid-cols-2 gap-10 gridGeral">
+        <div class="flex flex-col lg:grid grid-cols-2 gap-8 lg:gap-10 gridGeral">
             <!-- Coluna de entrada de dados -->
-            <aside class="flex flex-col gap-10 w-full">
+            <aside class="flex flex-col gap-4 lg:gap-10 w-full">
                 <Secao >
                     <SecaoHeaderDefault titulo="Dados do cenário" descricao="Preencha os dados do plano" />
 
@@ -31,7 +31,7 @@
                         <InputLabel label="Tributos sobre receita" inputType="number" spanText="%" v-model="dados.tributos" />
 
                         <div class="rounded-xl bg-green-100/50 p-3 text-sm leading-5 text-green-800 flex flex-row gap-2">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 17V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <circle cx="1" cy="1" r="1" transform="matrix(1 0 0 -1 11 9)" fill="#1C274C"></circle> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                            <svg width="30" height="24" class="lg:w-5 lg:h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 17V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> <circle cx="1" cy="1" r="1" transform="matrix(1 0 0 -1 11 9)" fill="#1C274C"></circle> <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
                             O resultado representa o saldo operacional do modelo didático.
                         </div>
                     </div>
@@ -39,21 +39,21 @@
             </aside>
 
             <!-- Coluna de resultado e análise do cenário -->
-            <div class="flex flex-col gap-10 w-full">
+            <div class="flex flex-col gap-8 lg:gap-10 w-full">
                 <!-- Estado vazio: mostra imagem quando ainda não há cenário criado -->
-                <div v-if="cenarios.length == 0" class="flex items-center justify-center h-full">
+                <div v-if="cenarios.length == 0" class="hidden lg:flex items-center justify-center h-full">
                     <img src="/images/esperandoCalcular.png" alt="" width="50%" height="50%" />
                 </div>
 
                 <!-- Lista de cenários disponíveis para seleção -->
-                <section v-if="cenarios.length > 0" class="grid grid-cols-3 gap-4 grid-flow-row items-start">
+                <section v-if="cenarios.length > 0" class="grid grid-cols-2 lg:grid-cols-3 gap-4 grid-flow-row items-start">
                     <CenarioRadio v-for="cenario in cenarios" inputName="cenarios" :inputValue="String(cenario.id)" :precoPlano="Number(cenario.preco)" :nomePlano="cenario.nome" v-model="cenarioSelecionado" />
                 </section>
 
                 <!-- Resultados do cenário selecionado -->
                 <section v-if="cenarios.length > 0" class="flex flex-col gap-10">
 
-                    <div class="grid grid-cols-4 gap-4 grid-flow-row items-center">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 grid-flow-row items-center">
                         <Cards v-for="card in cardsValores" :key="card.id" :categoria="card.categoria" :valor="card.valor" :isPositive="card.isPositive" :descricaoStatus="card.descricaoStatus" />
                     </div>
 
